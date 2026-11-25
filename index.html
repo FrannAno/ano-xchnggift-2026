@@ -242,7 +242,7 @@ function who(){
     <p class="soft">${others ? 'Tap your own name.' : `No names yet. Ask ${esc(ADMIN_NAME)} to add everyone.`}</p>
     <div class="names">${tiles.map(p => {
       const done = p.id !== '__admin' && drawn.has(p.id);
-      return `<button class="name${done ? ' done' : ''}" data-id="${esc(p.id)}">${esc(p.name)}${done ? '<small>nalpasen nga nag bunot</small>' : ''}</button>`;
+      return `<button class="name${done ? ' done' : ''}" data-id="${esc(p.id)}">${esc(p.name)}${done ? '<small>nalpasen kano</small>' : ''}</button>`;
     }).join('')}</div>
   </section>`;
   app.querySelectorAll('.name').forEach(b => b.onclick = () => {
