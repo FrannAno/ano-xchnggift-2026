@@ -226,7 +226,6 @@ function firstRoute(){
   const me = store.get('xg-me');
   if (me && people.has(me)){
     if (drawn.has(me)) return openDrawn(me, true);
-    if (store.get('xg-had') === me) notice = `${nameOf(me)}, your draw was reset. Tap your name to draw again.`;
   }
   who();
 }
