@@ -286,7 +286,7 @@ function confirmMe(id){
 
 function cards(id){
   view = 'cards';
-  const k = Math.max(3, Math.min(people.size - 1, 6));
+  const k = Math.max(1, [...people.keys()].filter(p => p !== id && !taken.has(p)).length);
   sub.textContent = `Hi ${nameOf(id)}! Tap any card.`;
   app.innerHTML = `<section class="panel center"><h2>Pick a card</h2><p class="soft">Whoever’s on it gets your gift.</p>
     <div class="deck">${Array.from({length: k}, (_, j) => `<button class="card" aria-label="Card ${j + 1}"><span class="in"><span class="back"><svg aria-hidden="true"><use href="#star"/></svg></span><span class="face"><small>You drew</small><b></b></span></span></button>`).join('')}</div>
