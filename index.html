@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Exchange Gift Draw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#b3122e,#3a0811);--deep:light-dark(#8c0a20,#250408);--ink:#fff8ec;--soft:rgba(255,248,236,.78);--gold:#f4b73a;--gold2:#ffd77a;--card:#fffaf0;--cink:#3a0a12;--line:rgba(255,248,236,.28)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Nunito Sans",system-ui,sans-serif;overflow-x:clip;min-height:100vh}
+main{max-width:560px;margin:0 auto;padding:clamp(24px,5vw,48px) 18px 80px}
+header{text-align:center;margin-bottom:26px}
+.parol{width:92px;height:118px;display:block;margin:0 auto 8px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.25))}
+h1{font:400 clamp(32px,7vw,46px)/1.05 "DM Serif Display",Georgia,serif;margin:0;text-wrap:balance}
+#sub{margin:8px 0 0;color:var(--soft)}
+h2{font:400 28px/1.1 "DM Serif Display",Georgia,serif;margin:0 0 6px;text-wrap:balance}
+#app{display:flex;flex-direction:column;gap:16px}
+.soft{color:var(--soft);margin:4px 0 12px}
+.panel{background:var(--deep);border:1px solid var(--line);border-radius:20px;padding:22px}
+.center{text-align:center}
+textarea,input{width:100%;font:16px/1.5 inherit;font-family:inherit;color:var(--cink);background:var(--card);border:2px solid transparent;border-radius:12px;padding:12px 14px}
+textarea{resize:vertical;min-height:120px}
+textarea:focus,input:focus,button:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 22px;border:0;border-radius:999px;background:var(--gold);color:var(--cink);font:800 17px/1 inherit;font-family:inherit;cursor:pointer;width:100%;margin-top:14px}
+.btn:hover{background:var(--gold2)}
+.btn:disabled{opacity:.6;cursor:default}
+.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.ghost:hover{background:rgba(255,248,236,.08)}
+.msg{min-height:1.4em;margin:10px 0 0;color:var(--gold2);font-weight:700}
+.note{background:var(--gold);color:var(--cink);border-radius:14px;padding:12px 14px;font-weight:700;margin:0 0 12px}
+.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:6px}
+.name{min-height:58px;border:0;border-radius:14px;background:var(--card);color:var(--cink);font:700 17px/1.2 inherit;font-family:inherit;padding:10px;cursor:pointer;overflow-wrap:anywhere}
+.name:hover{background:#fff}
+.name small{display:block;font-size:13px;opacity:.65;margin-top:3px}
+.name.done{background:rgba(255,250,240,.6)}
+.big{font:400 clamp(30px,8vw,44px)/1.1 "DM Serif Display",Georgia,serif;color:var(--gold2);margin:4px 0 6px;overflow-wrap:anywhere;text-wrap:balance}
+.deck{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 4px}
+.card{aspect-ratio:3/4;perspective:900px;border:0;background:none;padding:0;cursor:pointer;border-radius:14px;transition:opacity .4s,transform .3s}
+.card:disabled{cursor:default}
+.card.pick{transform:translateY(-6px)}
+.in{position:relative;display:block;width:100%;height:100%;transition:transform .8s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.card.gone{opacity:.25}
+.back,.face{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center}
+.back{background:radial-gradient(circle at 50% 50%,rgba(244,183,58,.22),transparent 60%),repeating-linear-gradient(45deg,#7a081b 0 8px,#8f0c22 8px 16px);border:2px solid var(--gold);box-shadow:0 6px 16px rgba(0,0,0,.28)}
+.back svg{width:42%;height:42%}
+.face{background:var(--card);color:var(--cink);transform:rotateY(180deg);padding:8px;text-align:center;align-content:center;gap:2px;border:2px solid var(--gold)}
+.face small{font-size:13px;opacity:.7}
+.face b{font:400 clamp(16px,4.5vw,22px)/1.1 "DM Serif Display",Georgia,serif;overflow-wrap:anywhere}
+.reveal{opacity:0;transform:translateY(8px);transition:.5s}
+.reveal.on{opacity:1;transform:none}
+.bar{height:10px;background:rgba(255,248,236,.18);border-radius:99px;overflow:hidden;margin:12px 0 6px}
+.bar span{display:block;height:100%;background:var(--gold);transition:width .4s}
+.plist{list-style:none;margin:0;padding:0}
+.plist li{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;justify-content:space-between;padding:14px 0;border-top:1px solid var(--line)}
+.plist li:first-child{border-top:0;padding-top:4px}
+.who b{display:block;font-size:17px;overflow-wrap:anywhere}
+.st{color:var(--soft);font-size:15px}
+.st b{display:inline;color:var(--gold2)}
+.tag{display:inline-block;margin-left:6px;font-size:13px;background:var(--gold);color:var(--cink);border-radius:999px;padding:1px 9px;font-weight:800}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.acts span{font-weight:700}
+.mini{min-height:44px;padding:0 15px;border-radius:999px;border:2px solid var(--line);background:transparent;color:var(--ink);font:700 15px/1 inherit;font-family:inherit;cursor:pointer}
+.mini:hover{background:rgba(255,248,236,.1)}
+.mini.solid{background:var(--gold);border-color:var(--gold);color:var(--cink)}
+.mini.danger{background:#fff;border-color:#fff;color:#a00b25}
+.empty{color:var(--soft);margin:4px 0}
+#toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;background:var(--card);color:var(--cink);padding:12px 20px;border-radius:999px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.in,.reveal,.card,#toast,.bar span{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><symbol id="star" viewBox="0 0 100 100"><polygon points="50,4 61,37 96,37 68,58 79,92 50,71 21,92 32,58 4,37 39,37" fill="#f4b73a"/><polygon points="50,24 56,42 75,42 60,53 66,71 50,60 34,71 40,53 25,42 44,42" fill="#ffd77a"/></symbol></defs>
+</svg>
+<main>
+  <header>
+    <svg class="parol" viewBox="0 0 100 128" aria-hidden="true">
+      <circle cx="50" cy="50" r="46" fill="#f4b73a" opacity=".16"/>
+      <use href="#star" x="2" y="2" width="96" height="96"/>
+      <circle cx="50" cy="52" r="7" fill="#fff8ec"/>
+      <path d="M38 82 Q34 104 26 124 M50 76 L50 126 M62 82 Q66 104 74 124" stroke="#f4b73a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+    <h1>Exchange Gift Draw</h1>
+    <p id="sub">Loading…</p>
+  </header>
+  <div id="app"></div>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInAnonymously, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, doc, onSnapshot, getDoc, updateDoc, writeBatch, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ================= SETUP: fill these in (see setup steps) ================= */
+const firebaseConfig = {
+  apiKey: "PASTE_HERE",
+  authDomain: "PASTE_HERE",
+  projectId: "PASTE_HERE",
+  appId: "PASTE_HERE"
+};
+const ADMIN_NAME = "Frann";                  // the name that opens the admin page
+const ADMIN_EMAIL = "PASTE_YOUR_ADMIN_EMAIL"; // the email you made the admin user with
+/* ========================================================================== */
+
+const $ = s => document.querySelector(s);
+const app = $('#app'), sub = $('#sub');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k){try{return localStorage.getItem(k)}catch(e){return null}},
+  set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+  del(k){try{localStorage.removeItem(k)}catch(e){}}
+};
+const norm = s => s.trim().replace(/\s+/g, ' ');
+const same = (a, b) => String(a).toLowerCase() === String(b).toLowerCase();
+const rand = n => {const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n};
+
+let db, auth, unsubDraws = null, routed = false, view = 'loading', notice = '', pending = null, toastT;
+const people = new Map(), drawn = new Set(), taken = new Set(), draws = new Map();
+const ready = {people: false, drawn: false, taken: false};
+
+const isAdminUser = () => !!auth.currentUser && !auth.currentUser.isAnonymous;
+const uid = () => auth.currentUser && auth.currentUser.uid;
+const nameOf = id => (people.get(id) || {}).name || 'Someone';
+const byOrder = () => [...people.entries()].map(([id, p]) => ({id, ...p})).sort((a, b) => (a.order || 0) - (b.order || 0));
+const adminEntry = () => byOrder().find(p => same(p.name, ADMIN_NAME));
+
+function flash(t){const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 2600)}
+
+function screen(title, text, backLabel){
+  app.innerHTML = `<section class="panel center"><h2></h2><p class="soft"></p>${backLabel ? `<button id="back" class="btn ghost"></button>` : ''}</section>`;
+  app.querySelector('h2').textContent = title;
+  app.querySelector('.soft').textContent = text;
+  if (backLabel){$('#back').textContent = backLabel; $('#back').onclick = home}
+}
+function fail(title, err){console.error(err); view = 'error'; sub.textContent = ''; screen(title, 'Check your internet connection and refresh the page. If it keeps happening, the Firebase setup may not be finished yet.')}
+function home(){isAdminUser() ? admin() : who()}
+
+/* ---------- draw logic ---------- */
+// Picks someone for `me` to give to: never themselves, never already taken,
+// and never a choice that would leave the last person with only their own name.
+function pickFor(me, skip = new Set()){
+  const all = [...people.keys()];
+  const undrawn = all.filter(id => !drawn.has(id) && id !== me);
+  const untaken = all.filter(id => !taken.has(id));
+  const ok = untaken.filter(id => id !== me && !skip.has(id)).filter(c => {
+    const left = untaken.filter(id => id !== c);
+    return !(undrawn.length === 1 && left.length === 1 && left[0] === undrawn[0]);
+  });
+  return ok.length ? ok[rand(ok.length)] : null;
+}
+const stuckPeople = () => [...people.keys()].filter(g => !drawn.has(g) && ![...people.keys()].some(id => id !== g && !taken.has(id)));
+
+async function doDraw(me){
+  const skip = new Set();
+  for (let i = 0; i < 6; i++){
+    const c = pickFor(me, skip);
+    if (!c) throw new Error('STUCK');
+    try {
+      await runTransaction(db, async tx => {
+        const d = await tx.get(doc(db, 'drawn', me));
+        if (d.exists()) throw new Error('ALREADY');
+        const t = await tx.get(doc(db, 'taken', c));
+        if (t.exists()) throw new Error('TAKEN');
+        tx.set(doc(db, 'taken', c), {at: serverTimestamp()});
+        tx.set(doc(db, 'drawn', me), {at: serverTimestamp()});
+        tx.set(doc(db, 'draws', me), {to: c, uid: uid(), unlock: false, at: serverTimestamp()});
+      });
+      return c;
+    } catch (e) {
+      if (e.message === 'ALREADY') throw e;
+      skip.add(c);
+    }
+  }
+  throw new Error('BUSY');
+}
+
+/* ---------- startup ---------- */
+const configured = !Object.values(firebaseConfig).some(v => String(v).startsWith('PASTE')) && !ADMIN_EMAIL.startsWith('PASTE');
+if (!configured){
+  sub.textContent = '';
+  screen('Almost ready', 'Paste your Firebase settings and admin email at the top of the script in index.html, then upload it again.');
+} else {
+  try {
+    const fb = initializeApp(firebaseConfig);
+    auth = getAuth(fb); db = getFirestore(fb);
+    onAuthStateChanged(auth, user => {
+      if (!user){signInAnonymously(auth).catch(e => fail('Couldn’t connect', e)); return}
+      if (!ready._subscribed){ready._subscribed = true; subscribe()}
+      if (user.isAnonymous) stopDraws(); else watchDraws();
+    });
+  } catch (e) {fail('Couldn’t start', e)}
+}
+
+function subscribe(){
+  const err = e => fail('Couldn’t load the draw', e);
+  onSnapshot(collection(db, 'people'), s => {people.clear(); s.forEach(d => people.set(d.id, d.data())); ready.people = true; changed()}, err);
+  onSnapshot(collection(db, 'drawn'), s => {drawn.clear(); s.forEach(d => drawn.add(d.id)); ready.drawn = true; changed()}, err);
+  onSnapshot(collection(db, 'taken'), s => {taken.clear(); s.forEach(d => taken.add(d.id)); ready.taken = true; changed()}, err);
+}
+function watchDraws(){
+  if (unsubDraws) return;
+  unsubDraws = onSnapshot(collection(db, 'draws'), s => {draws.clear(); s.forEach(d => draws.set(d.id, d.data())); changed()}, e => {
+    console.error(e); stopDraws(); view = 'error';
+    screen('Not set as admin', 'You signed in, but this account isn’t the admin in the Firestore rules. Check that the UID in the rules matches your admin user.');
+    app.querySelector('.panel').insertAdjacentHTML('beforeend', '<button id="so" class="btn ghost">Sign out</button>');
+    $('#so').onclick = logout;
+  });
+}
+function stopDraws(){if (unsubDraws){unsubDraws(); unsubDraws = null} draws.clear()}
+
+function changed(){
+  if (!(ready.people && ready.drawn && ready.taken)) return;
+  if (!routed){routed = true; firstRoute(); return}
+  if (view === 'who') who();
+  else if (view === 'admin') renderAdmin();
+}
+
+function firstRoute(){
+  if (isAdminUser()) return admin();
+  const me = store.get('xg-me');
+  if (me && people.has(me)){
+    if (drawn.has(me)) return openDrawn(me, true);
+    if (store.get('xg-had') === me) notice = `${nameOf(me)}, your draw was reset. Tap your name to draw again.`;
+  }
+  who();
+}
+
+/* ---------- family screens ---------- */
+function who(){
+  view = 'who';
+  sub.textContent = 'Tap your name to start.';
+  const tiles = [{id: '__admin', name: ADMIN_NAME}, ...byOrder().filter(p => !same(p.name, ADMIN_NAME))]
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const others = tiles.length - 1;
+  app.innerHTML = `<section class="panel">
+    ${notice ? `<p class="note">${esc(notice)}</p>` : ''}
+    <h2>Who are you?</h2>
+    <p class="soft">${others ? 'Tap your own name.' : `No names yet. Ask ${esc(ADMIN_NAME)} to add everyone.`}</p>
+    <div class="names">${tiles.map(p => {
+      const done = p.id !== '__admin' && drawn.has(p.id);
+      return `<button class="name${done ? ' done' : ''}" data-id="${esc(p.id)}">${esc(p.name)}${done ? '<small>Already drew</small>' : ''}</button>`;
+    }).join('')}</div>
+  </section>`;
+  app.querySelectorAll('.name').forEach(b => b.onclick = () => {
+    const id = b.dataset.id;
+    notice = '';
+    if (id === '__admin') return isAdminUser() ? admin() : askPw();
+    if (drawn.has(id)) return openDrawn(id, false);
+    confirmMe(id);
+  });
+}
+
+function askPw(){
+  view = 'pw';
+  sub.textContent = 'Admin sign-in';
+  app.innerHTML = `<section class="panel center">
+    <h2>Hi ${esc(ADMIN_NAME)}!</h2><p class="soft">Enter your password to open the admin page.</p>
+    <form id="pwf"><input id="pw" type="password" autocomplete="current-password" aria-label="Password" required>
+    <p id="pmsg" class="msg" role="status"></p>
+    <button class="btn" id="pbtn">Sign in</button></form>
+    <button id="back" class="btn ghost">Back</button></section>`;
+  $('#pw').focus();
+  $('#back').onclick = who;
+  $('#pwf').onsubmit = async e => {
+    e.preventDefault();
+    const b = $('#pbtn'); b.disabled = true; b.textContent = 'Checking…';
+    try {await signInWithEmailAndPassword(auth, ADMIN_EMAIL, $('#pw').value); admin()}
+    catch (err) {$('#pmsg').textContent = 'That password didn’t work. Try again.'; b.disabled = false; b.textContent = 'Sign in'}
+  };
+}
+
+function confirmMe(id){
+  view = 'confirm';
+  app.innerHTML = `<section class="panel center"><h2>Are you ${esc(nameOf(id))}?</h2>
+    <p class="soft">Only draw for yourself. Once you draw, your name locks.</p>
+    <button id="yes" class="btn">Yes, that’s me</button><button id="no" class="btn ghost">Go back</button></section>`;
+  $('#yes').onclick = () => cards(id);
+  $('#no').onclick = home;
+}
+
+function cards(id){
+  view = 'cards';
+  const k = Math.max(3, Math.min(people.size - 1, 6));
+  sub.textContent = `Hi ${nameOf(id)}! Tap any card.`;
+  app.innerHTML = `<section class="panel center"><h2>Pick a card</h2><p class="soft">Whoever’s on it gets your gift.</p>
+    <div class="deck">${Array.from({length: k}, (_, j) => `<button class="card" aria-label="Card ${j + 1}"><span class="in"><span class="back"><svg aria-hidden="true"><use href="#star"/></svg></span><span class="face"><small>You drew</small><b></b></span></span></button>`).join('')}</div>
+    <p id="cmsg" class="msg" role="status"></p><div id="rv" class="reveal" aria-live="polite"></div></section>`;
+  const all = [...app.querySelectorAll('.card')];
+  all.forEach(c => c.onclick = async () => {
+    all.forEach(o => o.disabled = true);
+    c.classList.add('pick');
+    $('#cmsg').textContent = 'Drawing…';
+    try {
+      const to = await doDraw(id);
+      if (!isAdminUser()){store.set('xg-me', id); store.set('xg-had', id)}
+      $('#cmsg').textContent = '';
+      c.querySelector('b').textContent = nameOf(to);
+      all.forEach(o => {if (o !== c) o.classList.add('gone')});
+      c.classList.add('flip');
+      setTimeout(() => showResult(id, to, $('#rv')), 850);
+    } catch (e) {
+      if (e.message === 'ALREADY') return openDrawn(id, false);
+      if (e.message === 'STUCK') return stuck(id);
+      console.error(e);
+      c.classList.remove('pick');
+      all.forEach(o => o.disabled = false);
+      $('#cmsg').textContent = 'Something went wrong. Tap a card to try again.';
+    }
+  });
+}
+
+function showResult(id, to, el){
+  view = 'result';
+  el.innerHTML = `<p class="soft" style="margin-top:18px">You’re giving a gift to</p><p class="big"></p>
+    <p class="soft">Keep it a secret until exchange day! You can open this page again on this phone to check.</p>
+    <button id="back" class="btn ghost">${isAdminUser() ? 'Back to admin' : 'Done'}</button>`;
+  el.querySelector('.big').textContent = nameOf(to);
+  el.classList.add('on');
+  $('#back').onclick = home;
+}
+
+function result(id, to){
+  view = 'result';
+  sub.textContent = `Hi ${nameOf(id)}! Here’s who you drew.`;
+  app.innerHTML = `<section class="panel center"><div id="rv" class="reveal"></div></section>`;
+  showResult(id, to, $('#rv'));
+  $('#back').textContent = 'Not you? Back to names';
+}
+
+async function openDrawn(id, silent){
+  try {
+    const s = await getDoc(doc(db, 'draws', id));
+    const d = s.data();
+    if (!d) throw new Error('none');
+    if (d.unlock) await updateDoc(s.ref, {uid: uid(), unlock: false});
+    store.set('xg-me', id); store.set('xg-had', id);
+    result(id, d.to);
+  } catch (e) {
+    if (silent) return who();
+    view = 'locked';
+    sub.textContent = '';
+    screen(`You’ve already drawn, ${nameOf(id)}`, `To see who you got again, ask ${ADMIN_NAME} to unlock it for you.`, 'Back to names');
+  }
+}
+
+function stuck(id){
+  view = 'stuck';
+  screen(`Hold on, ${nameOf(id)}!`, `The only name left is your own. Ask ${ADMIN_NAME} to fix the draw, then try again.`, 'Back');
+}
+
+/* ---------- admin ---------- */
+function admin(){
+  if (view !== 'admin'){
+    view = 'admin';
+    pending = null;
+    sub.textContent = 'Admin page. Only you can see this.';
+    app.innerHTML = `
+      <section class="panel" id="sum"></section>
+      <section class="panel"><h2>Add names</h2>
+        <p class="soft">One name per line. To join the draw yourself, add “${esc(ADMIN_NAME)}” too.</p>
+        <textarea id="add" rows="4" aria-label="Names to add, one per line" placeholder="Ana&#10;Ben&#10;Carla"></textarea>
+        <p id="addmsg" class="msg" role="status"></p>
+        <button id="addbtn" class="btn">Add to list</button></section>
+      <section class="panel"><h2>Everyone</h2><ul id="list" class="plist"></ul></section>
+      <button id="out" class="btn ghost">Sign out</button>`;
+    $('#addbtn').onclick = addNames;
+    $('#out').onclick = logout;
+  }
+  renderAdmin();
+}
+
+function renderAdmin(){
+  if (view !== 'admin') return;
+  const ps = byOrder(), done = ps.filter(p => drawn.has(p.id)).length, me = adminEntry();
+  const stuckNames = stuckPeople().map(nameOf);
+  const myDraw = me && draws.get(me.id);
+  $('#sum').innerHTML = `<h2>${done} of ${ps.length} have drawn</h2>
+    <div class="bar"><span style="width:${ps.length ? Math.round(done / ps.length * 100) : 0}%"></span></div>
+    ${stuckNames.length ? `<p class="note" style="margin-top:12px">${esc(stuckNames.join(', '))} can’t draw yet: the only name left is their own. Reset one person’s draw and both can draw.</p>` : ''}
+    ${me && !drawn.has(me.id) ? `<button class="btn" data-act="self">Draw for myself</button>` : ''}
+    ${myDraw ? `<p class="soft" style="margin:10px 0 0">You drew <b style="color:var(--gold2)">${esc(nameOf(myDraw.to))}</b>.</p>` : ''}`;
+  $('#list').innerHTML = ps.length ? ps.map(p => {
+    const d = draws.get(p.id), has = drawn.has(p.id);
+    const status = has ? (d ? `Drew <b>${esc(nameOf(d.to))}</b>${d.unlock ? '<span class="tag">Can see again</span>' : ''}` : 'Drew') : 'Not drawn yet';
+    let acts;
+    if (pending && pending.id === p.id){
+      acts = `<span>${pending.a === 'remove' ? 'Remove' : 'Reset'} ${esc(p.name)}?</span>
+        <button class="mini danger" data-act="yes" data-id="${esc(p.id)}">Yes</button>
+        <button class="mini" data-act="no" data-id="${esc(p.id)}">Cancel</button>`;
+    } else {
+      acts = `${has && d && !d.unlock ? `<button class="mini solid" data-act="see" data-id="${esc(p.id)}">Let see again</button>` : ''}
+        ${has ? `<button class="mini" data-act="reset" data-id="${esc(p.id)}">Reset draw</button>` : ''}
+        <button class="mini" data-act="remove" data-id="${esc(p.id)}">Remove</button>`;
+    }
+    return `<li><div class="who"><b>${esc(p.name)}</b><span class="st">${status}</span></div><div class="acts">${acts}</div></li>`;
+  }).join('') : `<li><p class="empty">No names yet. Add some above.</p></li>`;
+}
+
+async function onAdminClick(e){
+  const b = e.target.closest('[data-act]');
+  if (!b || view !== 'admin') return;
+  const a = b.dataset.act, id = b.dataset.id;
+  try {
+    if (a === 'self'){const me = adminEntry(); if (me) cards(me.id); return}
+    if (a === 'see'){await updateDoc(doc(db, 'draws', id), {unlock: true}); flash(`${nameOf(id)} can see their draw one more time.`); return}
+    if (a === 'reset' || a === 'remove'){pending = {a, id}; renderAdmin(); return}
+    if (a === 'no'){pending = null; renderAdmin(); return}
+    if (a === 'yes' && pending){
+      const p = pending; pending = null; b.disabled = true;
+      if (p.a === 'reset'){await resetDraw(p.id); flash(`${nameOf(p.id)} can draw again.`)}
+      else {const msg = await removePerson(p.id); flash(msg)}
+      renderAdmin();
+    }
+  } catch (err) {console.error(err); flash('Something went wrong. Try again.')}
+}
+
+async function resetDraw(g){
+  const b = writeBatch(db), d = draws.get(g);
+  b.delete(doc(db, 'draws', g)); b.delete(doc(db, 'drawn', g));
+  if (d) b.delete(doc(db, 'taken', d.to));
+  await b.commit();
+}
+
+async function removePerson(p){
+  const name = nameOf(p), paths = new Set([`people/${p}`]);
+  const mine = draws.get(p);
+  if (drawn.has(p)){paths.add(`drawn/${p}`); paths.add(`draws/${p}`)}
+  if (mine) paths.add(`taken/${mine.to}`);
+  const redo = [];
+  for (const [g, d] of draws){
+    if (d.to === p && g !== p){paths.add(`draws/${g}`); paths.add(`drawn/${g}`); paths.add(`taken/${p}`); redo.push(nameOf(g))}
+  }
+  if (taken.has(p)) paths.add(`taken/${p}`);
+  const b = writeBatch(db);
+  paths.forEach(path => b.delete(doc(db, path)));
+  await b.commit();
+  return redo.length ? `Removed ${name}. ${redo.join(', ')} can draw again.` : `Removed ${name}.`;
+}
+
+async function addNames(){
+  const msg = $('#addmsg');
+  const lines = $('#add').value.split('\n').map(norm).filter(Boolean);
+  if (!lines.length){msg.textContent = 'Type at least one name.'; return}
+  const existing = byOrder().map(p => p.name), added = [], skipped = [];
+  for (const n of lines){
+    if (n.length > 40){skipped.push(n.slice(0, 20) + '…'); continue}
+    if ([...existing, ...added].some(x => same(x, n))) skipped.push(n); else added.push(n);
+  }
+  if (!added.length){msg.textContent = `Already on the list: ${skipped.join(', ')}`; return}
+  const b = writeBatch(db), base = Date.now();
+  added.forEach((n, i) => b.set(doc(collection(db, 'people')), {name: n, order: base + i}));
+  $('#addbtn').disabled = true;
+  try {
+    await b.commit();
+    $('#add').value = '';
+    msg.textContent = `Added ${added.length} name${added.length > 1 ? 's' : ''}.` + (skipped.length ? ` Skipped (already listed or too long): ${skipped.join(', ')}` : '');
+  } catch (e) {console.error(e); msg.textContent = 'Couldn’t add names. Try again.'}
+  $('#addbtn').disabled = false;
+}
+
+app.addEventListener('click', onAdminClick);
+
+async function logout(){
+  view = 'loading';
+  await signOut(auth);
+  who();
+}
+</script>
+</body>
+</html>
