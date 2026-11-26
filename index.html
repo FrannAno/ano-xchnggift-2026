@@ -68,6 +68,11 @@ textarea:focus,input:focus,button:focus-visible{outline:3px solid var(--gold2);o
 .mini.solid{background:var(--gold);border-color:var(--gold);color:var(--cink)}
 .mini.danger{background:#fff;border-color:#fff;color:#a00b25}
 .empty{color:var(--soft);margin:4px 0}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.head h2{margin:0}
+.eye{display:inline-flex;align-items:center;gap:8px}
+.eye svg{width:20px;height:20px;flex:none}
+.hid{letter-spacing:2px;color:var(--soft)}
 #toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;background:var(--card);color:var(--cink);padding:12px 20px;border-radius:999px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 .overlay{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:18px;background:rgba(20,0,5,.6);opacity:0;transition:opacity .3s}
@@ -119,6 +124,7 @@ const norm = s => s.trim().replace(/\s+/g, ' ');
 const same = (a, b) => String(a).toLowerCase() === String(b).toLowerCase();
 const rand = n => {const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n};
 
+let showPicks = false;
 let db, auth, unsubDraws = null, routed = false, view = 'loading', notice = '', pending = null, toastT;
 const people = new Map(), drawn = new Set(), taken = new Set(), draws = new Map();
 const ready = {people: false, drawn: false, taken: false};
@@ -366,6 +372,7 @@ function admin(){
   if (view !== 'admin'){
     view = 'admin';
     pending = null;
+    showPicks = false;
     sub.textContent = 'Admin page. Only you can see this.';
     app.innerHTML = `
       <section class="panel" id="sum"></section>
@@ -374,10 +381,11 @@ function admin(){
         <textarea id="add" rows="4" aria-label="Names to add, one per line" placeholder="Ana&#10;Ben&#10;Carla"></textarea>
         <p id="addmsg" class="msg" role="status"></p>
         <button id="addbtn" class="btn">Add to list</button></section>
-      <section class="panel"><h2>Everyone</h2><ul id="list" class="plist"></ul></section>
+      <section class="panel"><div class="head"><h2>Everyone</h2><button id="eye" class="mini eye"></button></div><ul id="list" class="plist"></ul></section>
       <button id="out" class="btn ghost">Sign out</button>`;
     $('#addbtn').onclick = addNames;
     $('#out').onclick = logout;
+    $('#eye').onclick = () => {showPicks = !showPicks; renderAdmin()};
   }
   renderAdmin();
 }
@@ -387,14 +395,18 @@ function renderAdmin(){
   const ps = byOrder(), done = ps.filter(p => drawn.has(p.id)).length, me = adminEntry();
   const stuckNames = stuckPeople().map(nameOf);
   const myDraw = me && draws.get(me.id);
+  const pick = id => showPicks ? `<b>${esc(nameOf(id))}</b>` : '<span class="hid">••••••</span>';
+  $('#eye').innerHTML = showPicks
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><path d="M3 3l18 18"/></svg>Hide picks'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Show picks';
   $('#sum').innerHTML = `<h2>${done} of ${ps.length} have drawn</h2>
     <div class="bar"><span style="width:${ps.length ? Math.round(done / ps.length * 100) : 0}%"></span></div>
     ${stuckNames.length ? `<p class="note" style="margin-top:12px">${esc(stuckNames.join(', '))} can’t draw yet: the only name left is their own. Reset one person’s draw and both can draw.</p>` : ''}
     ${me && !drawn.has(me.id) ? `<button class="btn" data-act="self">Draw for myself</button>` : ''}
-    ${myDraw ? `<p class="soft" style="margin:10px 0 0">You drew <b style="color:var(--gold2)">${esc(nameOf(myDraw.to))}</b>.</p>` : ''}`;
+    ${myDraw ? `<p class="soft" style="margin:10px 0 0">You drew ${showPicks ? `<b style="color:var(--gold2)">${esc(nameOf(myDraw.to))}</b>` : '<span class="hid">••••••</span>'}.</p>` : ''}`;
   $('#list').innerHTML = ps.length ? ps.map(p => {
     const d = draws.get(p.id), has = drawn.has(p.id);
-    const status = has ? (d ? `Drew <b>${esc(nameOf(d.to))}</b>${d.unlock ? '<span class="tag">Can see again</span>' : ''}` : 'Drew') : 'Not drawn yet';
+    const status = has ? (d ? `Drew ${pick(d.to)}${d.unlock ? '<span class="tag">Can see again</span>' : ''}` : 'Drew') : 'Not drawn yet';
     let acts;
     if (pending && pending.id === p.id){
       acts = `<span>${pending.a === 'remove' ? 'Remove' : 'Reset'} ${esc(p.name)}?</span>
